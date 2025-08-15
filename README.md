@@ -1,16 +1,3 @@
-## Despliegue en Heroku
-
-Puedes desplegar esta app en Heroku fácilmente:
-
-1. Sube tu código a un repositorio de GitHub.
-2. Crea una app en [Heroku](https://dashboard.heroku.com/).
-3. Conecta tu repositorio en la sección "Deploy" de Heroku.
-4. En Settings > Config Vars, agrega tu clave:
-	- `GROQ_API_KEY=tu_clave_api`
-5. Haz deploy desde la rama principal.
-6. Accede a tu app desde la URL que te da Heroku.
-
-El archivo `Procfile` y `.python-version` ya están listos para que Heroku detecte y ejecute la app correctamente.
 # Asistente Conversacional de PDFs con RAG y Groq
 
 Este proyecto es una aplicación web desarrollada en Streamlit que permite interactuar con documentos PDF mediante chat, utilizando capacidades de Recuperación Aumentada por Recuperación (RAG) y el modelo Groq API. El sistema permite cargar, analizar y consultar múltiples PDFs, generando respuestas basadas en el contenido real de los documentos.
