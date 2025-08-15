@@ -34,7 +34,7 @@ huggingface-hub==0.34.4
 humanfriendly==10.0
 idna==3.10
 sentence-transformers==2.7.0
-numpy==2.3.2
+numpy<2
 streamlit==1.48.1
 requests==2.32.4
 PyPDF2==3.0.1
