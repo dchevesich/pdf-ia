@@ -1,4 +1,4 @@
-sentence-transformers==2.7.0
+transformers==4.55.2
 altair==5.5.0
 annotated-types==0.7.0
 anyio==4.10.0
@@ -40,5 +40,6 @@ requests==2.32.4
 PyPDF2==3.0.1
 python-dotenv==1.1.1
 torch==2.2.2+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
 --extra-index-url https://download.pytorch.org/whl/cpu
 langchain==0.3.27

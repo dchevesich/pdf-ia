@@ -1,17 +1,29 @@
 from dotenv import load_dotenv
 load_dotenv()
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from transformers import AutoTokenizer, AutoModel
+import torch
 # Vector store simple en memoria para fragmentos de PDF
 class PDFVectorStore:
     """Almacena embeddings y fragmentos de texto para búsqueda semántica."""
     def __init__(self):
         self.texts = []
         self.embeddings = []
-        self.model = SentenceTransformer('all-MiniLM-L6-v2')
+        # Usar modelo liviano compatible con HuggingFace
+        self.tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
+        self.model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
+
+    def _embed(self, texts):
+        # Obtiene embeddings promedio de los tokens CLS
+        with torch.no_grad():
+            inputs = self.tokenizer(texts, padding=True, truncation=True, return_tensors="pt")
+            outputs = self.model(**inputs)
+            # Usar la media de los embeddings de la última capa oculta
+            embeddings = outputs.last_hidden_state.mean(dim=1)
+            return embeddings.cpu().numpy()
 
     def add_texts(self, texts):
-        new_embs = self.model.encode(texts, convert_to_numpy=True)
+        new_embs = self._embed(texts)
         self.texts.extend(texts)
         if len(self.embeddings) == 0:
             self.embeddings = list(new_embs)
@@ -21,7 +33,7 @@ class PDFVectorStore:
     def search(self, query, top_k=3):
         if not self.texts:
             return []
-        query_emb = self.model.encode([query], convert_to_numpy=True)[0]
+        query_emb = self._embed([query])[0]
         embs = np.vstack(self.embeddings)
         sims = np.dot(embs, query_emb) / (np.linalg.norm(embs, axis=1) * np.linalg.norm(query_emb) + 1e-8)
         idxs = np.argsort(sims)[::-1][:top_k]
