@@ -1,0 +1,5 @@
+include requirements.txt
+include app.py
+include Procfile
+include .python-version
+recursive-include . .env
